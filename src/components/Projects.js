@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import Slider from 'react-slick';
+import { motion } from 'framer-motion';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -46,33 +47,43 @@ const Projects = () => {
     fade: false,
   };
 
+  // Helper function to shorten description text (if you want a manual truncate)
+  const truncateText = (text, maxLength = 120) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
+  };
+
   return (
     <section
       id="projects"
-      className="relative w-full min-h-screen bg-black bg-gradient-to-br from-black via-[#2e026d]/70 to-[#0f172a]/80 py-14 px-6 sm:px-10 md:px-14 lg:px-20 overflow-hidden"
+      className="relative w-full min-h-screen bg-black bg-gradient-to-br from-black via-[#2e026d]/70 to-[#0f172a]/80 py-5 px-6 sm:px-10 md:px-14 lg:px-20 overflow-hidden"
     >
       {/* Background Blobs */}
-      <div className="absolute w-[600px] h-[600px] bg-purple-700 opacity-20 rounded-full blur-3xl top-[-100px] left-[-150px] animate-pulse z-0"></div>
-      <div className="absolute w-[400px] h-[400px] bg-pink-600 opacity-20 rounded-full blur-2xl bottom-[-100px] right-[-100px] animate-pulse z-0"></div>
+      <div className="absolute w-[600px] h-[600px] bg-purple-700 opacity-20 rounded-full blur-3xl top-[-90px] left-[-130px] animate-pulse z-0"></div>
+      <div className="absolute w-[400px] h-[400px] bg-pink-600 opacity-20 rounded-full blur-2xl bottom-[-90px] right-[-90px] animate-pulse z-0"></div>
 
-      <h2 className="text-4xl md:text-5xl font-playfair font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-500 to-purple-500 drop-shadow-lg mb-12 relative z-10">
+      <h2 className="text-4xl md:text-5xl font-playfair font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-500 to-purple-500 drop-shadow-lg mb-10 relative z-10">
         🚀 My Projects
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-7xl mx-auto relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto relative z-10">
         {projectList.map((project, index) => (
-          <div
+          <motion.div
             key={index}
-            className="bg-gradient-to-br from-[#1a1a2e] via-[#1f1f3a] to-[#1c1c2e] border border-white/10 text-white p-8 rounded-3xl shadow-xl ring-1 ring-purple-900/40 hover:ring-pink-500 transition-all duration-300 transform hover:-translate-y-1"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.2 }}
+            className="max-w-xl bg-gradient-to-br from-[#1a1a2e] via-[#1f1f3a] to-[#1c1c2e] border border-white/10 text-white p-6 rounded-3xl shadow-lg ring-1 ring-purple-900/40 hover:ring-pink-500 transition-all duration-300 transform hover:-translate-y-1 mx-auto"
           >
-            <div className="mb-6 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-500 transform hover:scale-105">
+            <div className="mb-5 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-500 transform hover:scale-105">
               <Slider {...sliderSettings}>
                 {project.images.map((img, i) => (
                   <div key={i} className="relative group">
                     <img
                       src={img}
                       alt={`Slide ${i + 1}`}
-                      className="w-full h-56 object-cover rounded-xl group-hover:brightness-90 transition duration-300"
+                      className="w-full h-52 object-cover rounded-xl group-hover:brightness-90 transition duration-300"
                     />
                   </div>
                 ))}
@@ -83,12 +94,13 @@ const Projects = () => {
               <h3 className="text-2xl font-semibold text-pink-300 mb-2 font-playfair">
                 {project.title}
               </h3>
-              <p className="text-gray-300 text-base leading-relaxed">
-                {project.description}
+              {/* Shorter, smaller description */}
+              <p className="text-gray-300 text-sm leading-snug">
+                {truncateText(project.description, 110)}
               </p>
             </div>
 
-            <div className="mb-5 text-sm text-purple-200">
+            <div className="mb-6 text-sm text-purple-200">
               <span className="font-semibold text-purple-400">Technologies:</span>{' '}
               {project.technologies.join(', ')}
             </div>
@@ -111,7 +123,7 @@ const Projects = () => {
                 GitHub <FaExternalLinkAlt className="text-xs" />
               </a>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
